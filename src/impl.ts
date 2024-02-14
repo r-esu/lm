@@ -4,9 +4,14 @@ import { type sound_schema } from './exports.ts'
 // Function to implement navigation and selection through console
 const console_navigation_impl = async (
     array_to_navigate: sound_schema[], 
-    items_per_page = 10, cursor_position: [number, number] = [1, items_per_page]
+    sorted: 'newest_to_oldest' | 'default_as_list' = 'default_as_list',
+    items_per_page = 10, cursor_position: [number, number] = [1, items_per_page],
 ): Promise<undefined> => {
-    const schema_menu_list = array_to_navigate.map(schema =>
+    const schema_menu_list_array = sorted == 'default_as_list' ? array_to_navigate : array_to_navigate.sort(
+        (a, b) => a.Time && b.Time ? new Date(b.Time).getTime() - new Date(a.Time).getTime() : 0
+    );
+    
+    const schema_menu_list = schema_menu_list_array.map(schema =>
         `${schema.Title} - ${schema.Artists}`
     );
 
@@ -24,9 +29,9 @@ const console_navigation_impl = async (
             const length: number = (len + 1) + cursor_position[1] - items_per_page;
 
             if (cursor_position[0] != len + 1)
-                console.log(`${length}. %c"%c${item}%c"`, `color: white; font-weight: regular`, `color: cyan; font-weight: regular`, `color: white; font-weight: regular`)
+                console.log(`    ${length}. %c"%c${item}%c"`, `color: white; font-weight: regular`, `color: cyan; font-weight: regular`, `color: white; font-weight: regular`)
             else
-                console.log(`%c» %c[${length}] %c"%c${item}%c"`, `color: magenta; font-weight: regular`, `color: gray; font-weight: regular`, `color: gray; font-weight: regular`, `color: cyan; font-weight: regular`, `color: gray; font-weight: regular`)
+                console.log(`    %c» %c[${length}] %c"%c${item}%c"`, `color: magenta; font-weight: regular`, `color: gray; font-weight: regular`, `color: gray; font-weight: regular`, `color: cyan; font-weight: regular`, `color: gray; font-weight: regular`)
         });
     }
 
@@ -45,15 +50,23 @@ const console_navigation_impl = async (
 
         if (data[0] === 13)
         {
-            const len : number = (cursor_position[0] - 1) + cursor_position[1] - items_per_page;
-            const item: string = schema_menu_list[len];
-
-            console.log(`%c» %c[${len + 1}] %c"%c${item}%c" %c✔`, `color: magenta; font-weight: regular`, `color: gray; font-weight: regular`, `color: gray; font-weight: regular`, `color: cyan; font-weight: regular`, `color: gray; font-weight: regular`, `color: green; font-weight: regular`);
             return await open(
                 `https://www.youtube.com/results?search_query=${encodeURIComponent(
                     schema_menu_list[(cursor_position[0] - 1) + cursor_position[1] - items_per_page]
                 )}`
-            ).then(() => Deno.exit())
+            ).then(() => {
+                const len : number = (cursor_position[0] - 1) + cursor_position[1] - items_per_page;
+                const item: string = schema_menu_list[len];
+                
+                // We clear the console because of deno warnings
+                console.clear();
+                console.clear();
+                console.clear();
+
+                console.log(`%c» %c[${len + 1}] %c"%c${item}%c" %c✔`, `color: magenta; font-weight: regular`, `color: gray; font-weight: regular`, `color: gray; font-weight: regular`, `color: cyan; font-weight: regular`, `color: gray; font-weight: regular`, `color: green; font-weight: regular`);
+
+                Deno.exit();
+            });
         }
 
         // Handling arrow key inputs
@@ -101,12 +114,19 @@ const pick_random_audio_impl = async ( parsed_csv_file: sound_schema[] ): Promis
     const len : number = Math.floor(Math.random() * schema_menu_list.length);
     const item: string = schema_menu_list[len];
     
-    console.log(`%c» %c[${len + 1}] %c"%c${item}%c" %c✔`, `color: magenta; font-weight: regular`, `color: gray; font-weight: regular`, `color: gray; font-weight: regular`, `color: cyan; font-weight: regular`, `color: gray; font-weight: regular`, `color: green; font-weight: regular`);
-
     // Defining the url of the random song to be url-safe
     const url = `https://www.youtube.com/results?search_query=${encodeURIComponent(item)}`;
     // Openning the url in the default browser & exiting the application.
     return await open(url).then(() => {
+        // We clear the console because of deno warnings
+        console.clear();
+        console.clear();
+        console.clear();
+
+        // We log to the user the selected audio
+        console.log(`%c» %c[${len + 1}] %c"%c${item}%c" %c✔`, `color: magenta; font-weight: regular`, `color: gray; font-weight: regular`, `color: gray; font-weight: regular`, `color: cyan; font-weight: regular`, `color: gray; font-weight: regular`, `color: green; font-weight: regular`);
+
+        // Then finally we exit the cli application
         Deno.exit();
     });
 }

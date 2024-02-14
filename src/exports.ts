@@ -1,7 +1,8 @@
 // Command arguments
 const supported_arguments = {
-    'list': ['l', 'list', '-l'],
-    'rand': ['r', 'rand', '-r']
+    'list'          : ['l' , 'list' , '-l'  ],
+    'slist'         : ['sl', 'slist', '-sl' ],
+    'rand'          : ['r' , 'rand' , '-r'  ]
 };
 
 const check_for_command = (r_args: ( ) => string[]): keyof typeof supported_arguments | null => {
@@ -12,8 +13,8 @@ const check_for_command = (r_args: ( ) => string[]): keyof typeof supported_argu
         if (Object.prototype.hasOwnProperty.call(supported_arguments, key)) {
             const aliases = (supported_arguments as { [key: string]: string[] })[key];
             for (const arg of args) {
-                if (!aliases.includes(arg)) return null;
-                return key as keyof typeof supported_arguments;
+                if (aliases.includes(arg))
+                    return key as keyof typeof supported_arguments;
             }
         }
     }

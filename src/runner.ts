@@ -34,7 +34,12 @@ const parse_command = async (command: keyof typeof supported_arguments): Promise
     switch (command) {
         case 'list':
             // Executing console navigation for the 'list' command
-            console_navigation_impl(parsed_csv_file);
+            console_navigation_impl(parsed_csv_file, 'default_as_list');
+            break;
+
+        case 'slist':
+            // Executing console navigation for the 'listn' command
+            console_navigation_impl(parsed_csv_file, 'newest_to_oldest');
             break;
 
         case 'rand':
