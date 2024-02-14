@@ -1,17 +1,19 @@
-const commands = {
+// Command arguments
+const supported_arguments = {
     'list': ['l', 'list', '-l'],
     'rand': ['r', 'rand', '-r']
 };
 
-const check_for_command = (r_args: ( ) => string[]): keyof typeof commands | null => {
+const check_for_command = (r_args: ( ) => string[]): keyof typeof supported_arguments | null => {
     const args = r_args();
     
-    for (const key in commands) {
-        if (Object.prototype.hasOwnProperty.call(commands, key)) {
-            const aliases = (commands as { [key: string]: string[] })[key];
+    // We check if the command contains any of the supported_arguments and we return the name of the argument
+    for (const key in supported_arguments) {
+        if (Object.prototype.hasOwnProperty.call(supported_arguments, key)) {
+            const aliases = (supported_arguments as { [key: string]: string[] })[key];
             for (const arg of args) {
                 if (!aliases.includes(arg)) return null;
-                return key as keyof typeof commands;
+                return key as keyof typeof supported_arguments;
             }
         }
     }
@@ -19,17 +21,18 @@ const check_for_command = (r_args: ( ) => string[]): keyof typeof commands | nul
     return null; // No matching command found
 }
 
+// A sound_schema to make sure the project is type safe
 type sound_schema = {
-    ACR_ID  : string,
-    Title   : string,
-    Artists : string,
-    Time    : string,
-    Source_URL: string,
-    Detail_URL: string,       
+    ACR_ID  ?: string,
+    Title    : string,
+    Artists  : string,
+    Time    ?: string,
+    Source_URL?: string,
+    Detail_URL?: string,       
 }
 
 export {
-    commands,
+    supported_arguments,
     check_for_command,
 };
 
