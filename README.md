@@ -3,12 +3,14 @@
 LM is a lightweight tool built on Deno and TypeScript designed to parse a structured `.csv` file to represent a list of sounds or music. With LM, you can easily choose & pick your favourite sounds/music by cli and pick a random one from the list with simple commands.
 
 ### Showcase :-
+(Note: Gif takes a little bit of time to load due high size.)
 ![lm-showcase](/readme-assets/lm-example.gif)
 
 ## Installation
 1. Ensure you have Deno installed: [Deno Installation Guide](https://docs.deno.com/runtime/manual/getting_started/installation) 
 
-2. Clone the repo: ```bash 
+2. Clone the repo: 
+```bash 
 git clone https://github.com/h-ec/lm```
 
 3. Then run one of the commands below using your prefered package manager
