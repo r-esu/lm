@@ -1,0 +1,12 @@
+{
+  "name": "bun-mapi-support",
+  "module": "./src/index.ts",
+  "scripts": {
+    "build:cos": "deno compile -A --output ./build/lm.exe ./src/index.ts"
+  },
+  "type": "module",
+  "dependencies": {
+    "csvtojson": "^2.0.10",
+    "open": "^10.0.3"
+  }
+}
