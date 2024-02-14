@@ -1,4 +1,4 @@
-import open from 'npm:open'
+import { open } from 'https://deno.land/x/open@v0.0.6/index.ts'
 import { type sound_schema } from './exports.ts'
 
 // Function to implement navigation and selection through console
@@ -88,6 +88,11 @@ const console_navigation_impl = async (
 };
 
 const pick_random_audio_impl = async ( parsed_csv_file: sound_schema[] ): Promise<never> => {
+    // We clear the console because of deno warnings
+    console.clear();
+    console.clear();
+    console.clear();
+    
     // Generating a random song and opening its YouTube search
     const schema_menu_list = parsed_csv_file.map(schema =>
         `${schema.Title} - ${schema.Artists}`
