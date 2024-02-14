@@ -10,8 +10,9 @@ LM is a lightweight tool built on Deno and TypeScript designed to parse a struct
 1. Ensure you have Deno installed: [Deno Installation Guide](https://docs.deno.com/runtime/manual/getting_started/installation) 
 
 2. Clone the repo: 
-```bash 
-git clone https://github.com/h-ec/lm```
+   ```bash 
+   git clone https://github.com/h-ec/lm
+   ```
 
 3. Then run one of the commands below using your prefered package manager
 
